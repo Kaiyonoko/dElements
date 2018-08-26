@@ -1,0 +1,146 @@
+Water (Move faster on snow, scrolling changes thickness) ✔
+   
+    (Look at water source) WaterStream
+        Hold Shift: Start building construct
+            Release shift: Throw as wave
+            Click: Throw as damage
+            R-click: Freeze
+            # If frozen and thrown, can freeze opponents
+            # If construct hits non-water block, end construct. If construct hits water, begin new construct.            
+        Click: Wave (Single size, rideable)
+        R-Click: Phasechange ✔
+    
+    (Look at Ice)
+        Shift: Wall 
+        Click: Draw Ice Construct/Spike
+        R-Click: Phasechange ✔
+        
+    (Look at air)
+        Shift: Summons a blob of water. (drippy) ✔-
+            Tap Shift: Dissipate (?) ✔
+            Hold Shift: Splat blob into shield - X
+                Click: Push (Surge)
+                R-Click: Freeze ✔
+            Click: Torrent/Manip - X
+            R-Click: Phasechange ✔
+                While Frozen:
+                    R-click: Unfreeze ✔
+                    Click: Launch Spike (not guidable, more damage)
+                    Shift: Unfreeze, flow away from bender (along the ground), IceGrab after time or on entity contact (stun)
+        Click: Water Whip/Spear (Water/Frozen) ✔
+        R-click: WaterArms - Octopusform (depending on scroll)
+            L-Click: Damage
+            R-Click: Grab
+            Shift: Dissipate
+  
+    (In water) (Passive: Healing)
+        Shift: Swim in direction of looking. ✔
+        Click while at surface: Water Spout.
+        Click while underwater: Water Jet ✔
+        R-click: Toggle Water Bubble (Scroll Based) - X
+    
+    (Look at Plant)
+        Shift: Extract Water Blob
+        R-Click: Start Drawing with Vine. (Cursor) - X
+        Click: Launch Plant. ✔
+        
+    (Holding Water Bottle, all moves consume water bottle)
+        R-Click: Healing orb mist thing ✔
+        Click: Self heal COOLDOWN, SLOW ✔
+        Shift: Heal single target ✔
+        Shift in water: radial ✔
+
+Healing > Water Jet > PlantBlast > Scroll Passive > Water Bubble > PhaseChange > watermanip/torrent > fuck   
+        
+Earth Passive: NoFallDamage (Passive (unlockable): Seismic Sense (Glowing)) ✔✔
+
+    (Look at Earth)
+        Charge Shift: Grab the Earth
+            R-Click: Fissure
+            L-Click: EarthSpikes
+            Release: Raises the boulder
+                While Boulder in air:
+                    Hold Shift on Boulder: Drag
+                        Click while shifting: launch just that one
+                    Shift on Ground: Raise another boulder
+                    Click: Throw Boulders (Shockwave on landing if big enough)
+                    R-Click: Shotgun Spray
+        R-Click: EarthPull (Up or sideways)
+            L-Click: Throw Wall
+            Shift: Return to normal
+        Click: Collapse/Dig ✔
+    
+    (Look at Air)
+        Shift: EarthArmor ✔
+        Click: Launch ✔
+        R-Click: EarthWave
+
+    (Midair)
+        Shift: EarthRide ✔ 
+    
+    (Look at Sand):
+	Shift: <Insert Sandbending move>
+	Click: <Insert Sandbending move>
+	R-Click: <Insert Sandbending move>  
+		
+
+        
+EVERYTHING REDIRECTABLE FOR EARTH AND WATER.
+
+Air (Passive: Slow Fall, Air Stomp Landing)
+    
+    (Look at ground)
+    Shift: Cyclone around block
+    Click: Air Burst ✔
+    R-Click: Air Spout ✔
+    
+    (Running)
+    Click: Air Punch ✔
+    R-Click: Air Kick ✔
+    
+    (With Staff)
+    Shift: Air Stomp ✔
+    Click: Air Blade ✔
+    R-Click: Glider Toggle
+    
+    (Normal)
+    Shift: Air Breath ✔
+    Click: Air Blast (Half a heart, main damage comes from opponent smashing into something.) ✔ (! Kinetic damage)
+    R-Click: Air Suction ✔
+    
+    (Midair)
+    Shift: Air Scooter/Wheel ✔
+    Click: Launch somewhere. ✔
+    R-Click: Air Cocoon ✔
+
+Fire (Passive: Heatcontrol, Scroll to Intensify flames?)
+
+    (Normal)
+	Tap Shift: Fire Blob/Shield ✔
+    Hold Shift: Blob expands into Fire Mass/Ball ✔
+    With Fire Mass:
+        Click: Fire Stream, Start Stop (!stops naturally) ✔
+        R-Click: FireFlow (Controllable stream)
+        Release: Charged Fire Blast (Combustion) ✔
+    Click: FireBlast ✔ REDO
+    R-Click: FireBlock
+    
+	(While Running)
+	Click: FireJab, straight (big) ✔
+	R-Click: FireKick ✔
+	
+    (Midair)
+    Click: FireDash ✔
+	
+    (Looking at ground)
+    Click: Fire Bomb ✔
+    Shift start: FireRing ✔
+        Shift stop: FireBurst ✔
+        Click: FireWall
+        R-Click: FireLine
+    R-Click: Fire Wheel ✔
+	
+	(Lightning)
+	Spam right click and left click in quick succession: Charge lightning
+	Stop spamming: Release lightning bolt
+	If you shifted while spamming: Lightning Burst
