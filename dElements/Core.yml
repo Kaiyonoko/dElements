@@ -1,0 +1,1948 @@
+# dElements {}
+FireWorkReminder:
+    type: command
+    name: fireworkreminder
+    usage: /fireworkreminder
+    aliases:
+    - fwr
+    - reminder
+    description: We don't want to type it
+    script:
+    - if !<player.is_op> {
+        - narrate "<&c>No."
+        - queue clear
+    }
+    - announce "<&d>OUR FIREWORK STARS EXIST FOR THE CUSTOM BENDING BECAUSE minecraft WAS NOT CODED WELL. THEY BEHAVE AS EMPTY SLOTS AS LONG AS YOU HAVE ITEMS TO DRAG INTO THEM. THANK YOU."
+
+GliderStaff:
+    type: item
+    debug: false
+    material: i@blaze_rod
+    display name: <&8>Airbender Glider-Staff
+    lore:
+    - <&7>Fancy
+
+SpawnProtect:
+    type: world
+    debug: false
+    events:
+        on player walks:
+            - if <player.location.distance[<player.location.world.spawn_location>]> <= 30 && !<player.has_flag[element_toggled]> {
+                - flag <player> element_toggled
+            }
+SprintState:
+    type: world
+    debug: false
+    events:
+        on player starts sprinting:
+            - flag <player> sprinting:true
+        on player stops sprinting:
+            - flag <player> sprinting:false
+
+RightClickEvent:
+    type: world
+    debug: false
+    events:
+        on player walks:
+            - repeat 9 {
+                - if <player.inventory.slot[<def[value]>]> == i@air {
+                    - inventory set slot:<def[value]> origin:i@firework_charge
+                }
+                - if <player.inventory.slot[<def[value]>]> == i@firework_charge && <player.inventory.slot[<def[value]>]> == i@firework_charge
+            }
+        on player swaps items:
+            - if <context.main.is[==].to[i@firework_charge].or[<context.offhand.is[==].to[i@firework_charge]>]> {
+                - determine cancelled
+            }
+        on player drops firework_charge:
+            - determine cancelled
+        on player clicks in inventory:
+            - if <context.item> == i@firework_charge && <context.inventory.inventory_type> == crafting {
+                - if <context.cursor_item> != i@air {
+                    - wait 1t
+                    - adjust <player> "item_on_cursor:i@air"
+                    - wait 1t
+                    - inventory update
+                }
+                else {
+                    - determine passively cancelled
+                }
+            }
+ELEMENT_COMMAND:
+    type: command
+    debug: false
+    name: element
+    usage: /element
+    description: Main bending command command
+    script:
+    - choose "<context.args.get[1]>":
+        - case "choose":
+            - choose "<context.args.get[2]>":
+                - case "fire":
+                    - flag <player> element:fire
+                    - narrate "<&c>You are now a firebender."
+                - case "water":
+                    - flag <player> element:water
+                    - flag <player> plantbending
+                    - flag <player> healing
+                    - narrate "<&3>You are now a waterbender."
+                - case "earth":
+                    - flag <player> element:earth
+                    - flag <player> sandbending
+                    - narrate "<&2>You are now an earthbender."
+                - case "air":
+                    - flag <player> element:air
+                    - narrate "<&7>You are now an airbender."
+                - default:
+                    - narrate "<&c>Unknown element! Valid elements are fire, air, water, and earth."
+        - case "how":
+            - if <player.flag[element]> == null {
+                - narrate "<&c>You don't have an element! Use /element choose (element)"
+                - queue clear
+            }
+            - if <player.flag[element]> == water {
+                - narrate "<&c>WIP for water"
+                - queue clear
+            } else if <player.flag[element]> == earth {
+                - narrate "<&c>WIP for earth"
+                - queue clear
+            } else if <player.flag[element]> == fire {
+                - narrate "<&4>Standing Regularly<&co>"
+                - narrate "<&c>Left Click<&co> Fireblast"
+                - narrate "<&c>Right Click<&co> FireBlock"
+                - narrate "<&c>Hold Shift<&co> Charge Fire"
+                - narrate "<&c>Right Click Ground<&co> FirePinwheel"
+                - narrate "<&c>--------------------"
+                - narrate "<&4>With Charged Fire<&co>"
+                - narrate "<&c>Left Click<&co> FireStream"
+                - narrate "<&c>Release Shift<&co> Charged FireBlast"
+                - narrate "<&c>--------------------"
+                - narrate "<&4>While Sprinting<&co>"
+                - narrate "<&c>Left Click<&co> FireBall"
+                - narrate "<&c>Right Click<&co> FireKick"
+                - narrate "<&c>--------------------"
+                - narrate "<&4>In The Air<&co>"
+                - narrate "<&c>Left Click<&co> FireDash"
+                - narrate "<&c>--------------------"
+                - narrate "<&4>Looking at Ground<&co>"
+                - narrate "<&c>Left Click<&co> FireBomb"
+                - narrate "<&c>Hold Shift<&co> FireRing"
+                - narrate "<&c>--------------------"
+                - narrate "<&4>With FireRing<&co>"
+                - narrate "<&c>Left Click<&co> FireWave"
+                - narrate "<&c>Right Click<&co> FireLine"
+                - narrate "<&c>Release Shift<&co> FireBurst"
+                - queue clear
+            } else if <player.flag[element]> == air {
+                - narrate "<&8>Passive<&co>"
+                - narrate "<&7>Tap Shift in Midair: SlowFall"
+                - narrate "<&7>--------------------"
+                - narrate "<&8>Standing Regularly<&co>"
+                - narrate "<&7>Left Click<&co> Airblast"
+                - narrate "<&7>Right Click<&co> Air Succ"
+                - narrate "<&7>Shift<&co> AirBreath"
+                - narrate "<&7>Right Click Ground<&co> AirSpout"
+                - narrate "<&7>--------------------"
+                - narrate "<&8>While Sprinting<&co>"
+                - narrate "<&7>Left Click<&co> AirPunch"
+                - narrate "<&7>Right Click<&co> AirKick"
+                - narrate "<&7>--------------------"
+                - narrate "<&8>Above the Ground<&co>"
+                - narrate "<&7>Left Click<&co> AirJump"
+                - narrate "<&7>Tap Shift<&co> AirScooter"
+                - narrate "<&7>Right Click<&co> AirCocoon"
+                - narrate "<&7>--------------------"
+                - narrate "<&8>With Staff<&co>"
+                - narrate "<&7>Left Click<&co> AirBlade"
+                - narrate "<&7>Right Click<&co> Glider"
+                - narrate "<&7>Tap Shift<&co> AirStomp"
+                - queue clear
+            }
+        - case "toggle":
+            - if <player.has_flag[element_toggled]> {
+                - flag <player> element_toggled:!
+                - narrate "<&7>Your bending has been toggled back on!"
+                - queue clear
+            } else {
+                - flag <player> element_toggled
+                - narrate "<&7>Your bending has been toggled off!"
+            }
+        - default:
+            - narrate "<&5>----[<&7>Element Help<&5>]----"
+            - narrate "<&5>/element choose (element)<&d><&co> Choose your element"
+            - narrate "<&5>/element how<&d><&co> Explain how to use your current element"
+
+                
+# FIX BUG ^
+###################################
+#### Water
+###################################
+# Healing > Water Jet > PlantBlast > Scroll Passive > Water Bubble > PhaseChange > watermanip/torrent > fuck
+# WaterBubble: 
+    # type: world 
+    # debug: true
+    # events: 
+        # on player right clicks with item:
+            # - if <player.has_flag[element_toggled]> {
+                # - queue clear 
+            # } 
+            # - if <player.flag[element].is[!=].to[water]> { 
+                # - queue clear 
+            # } 
+            # - if <player.has_flag[WaterBubble]> { 
+                # - flag <player> WaterBubble:!
+                # - queue clear
+            # } 
+            # - if <player.location.material.name.is[==].to[stationary_water]> { 
+                # - if !<player.has_flag[WaterBubble]> { 
+                    # - flag <player> WaterBubble 
+                # } 
+            # } 
+            # - wait 1t 
+            # - while <player.has_flag[WaterBubble]> && !<player.has_flag[element_toggled]> {
+                # - define bubble ellipsoid@<player.location.simple>,<player.flag[WaterIndex]>,<player.flag[WaterIndex]>,<player.flag[WaterIndex]>
+                # - if !<def[old].blocks.exclude[<def[bubble].blocks>].is_empty||false> {
+                    # - modifyblock <def[old].blocks.exclude[<def[bubble].blocks[air]>]> stationary_water no_physics
+                # }
+                # - modifyblock <def[bubble]> air no_physics
+                # - define old <def[bubble]>
+                # - wait 1t
+            # }
+# WaterManipulation:
+    # type: world
+    # debug: false
+    # events:
+        # on player starts sneaking:
+            # - if <player.has_flag[WaterManipulation]> {
+                # - flag <player> WaterManipDissipate duration:10t
+            # }
+            # - if <player.has_flag[WaterManipulation]> {
+                # - flag <player> WaterShield
+                # - define ShieldSource <player.location.cursor_on[2]>
+                # - define ShieldRange ellipsoid@<player.location.simple>,4,4,4
+                # - foreach <def[ShieldRange].blocks> {
+                    # - if <def[ShieldSource].find.blocks[air].within[4].contains[<def[value]>]>
+                # }
+                # - while <player.has_flag> WaterShield {
+                    # - modifyblock li@<def[ShieldSource].include[<>]>
+                # }
+            # }
+            # - if <player.has_flag[element_toggled]> {
+                # - queue clear
+            # }
+            # - if <player.flag[element].is[!=].to[water]> {
+                # - queue clear
+            # }
+            # - if <player.location.cursor_on[4].material.name.is[!=].to[air]> {
+                # - queue clear
+            # }
+            # - wait 3t
+            # - if !<player.is_sneaking> {
+                # - flag <player> WaterManipulation
+            # }
+            # - if <player.has_flag[WaterManipulation]> && <player.location.find.blocks[stationary_water].within[5].size> > 0 {
+                # - ^define source <player.location.find.blocks[stationary_water].within[5].random>
+                # - ^modifyblock <def[source]> air
+                # - foreach <def[source].points_between[<player.location.cursor_on[2]>]> {
+                    # - ^modifyblock <def[value]> stationary_water,8
+                    # - wait 1t
+                    # - ^modifyblock <def[value]> air
+                # }
+                # - while <player.has_flag[WaterManipulation]> && !<player.has_flag[WaterShield]> {
+                    # - define WaterManipLoc <player.location.cursor_on[2]>
+                    # - modifyblock <def[WaterManipLoc]> stationary_water,8 no_physics
+                    # - playeffect <def[WaterManipLoc].block.center> effect:drip_water quantity:3 offset:0.2,0.2,0.2
+                    # - wait 1t
+                    # - modifyblock <def[WaterManipLoc]> air
+                # }
+            # }
+        # on player stops sneaking:
+            # - if <player.has_flag[WaterManipDissipate]> {
+                # - flag <player> WaterManipulation:!
+            # }
+    # (Look at air)
+        # Shift: Summons a blob of water. (drippy)
+            # Tap Shift: Dissipate (?) 
+            # Hold Shift: Splat blob into shield
+                # Click: Push (Surge)
+                # R-Click: Freeze
+            # Click: Torrent/Manip
+            # R-Click: Phasechange
+                # While Frozen:
+                    # R-click: Unfreeze
+                    # Click: Launch Spike (not guidable, more damage)
+                    # Shift: Unfreeze, flow away from bender (along the ground), IceGrab after time or on entity contact (stun)
+WaterStream:
+    type: world 
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if <player.location.material.name.is[!=].to[stationary_water]> {
+                - queue clear
+            }
+            - if <player.location.cursor_on[7].material.name.is[==].to[stationary_water]> {
+                - while <player.is_sneaking> {
+                    
+                }
+            }
+            
+WaterWhip:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if <player.has_flag[WaterWhipCooldown]> {
+                - queue clear
+            }
+            - if <player.location.cursor_on[4].material.name.is[==].to[air]> {
+                - if <player.location.find.blocks[stationary_water].within[6].is[!=].to[li@]> {
+                    - define source <player.location.find.blocks[stationary_water].within[8].random>
+                    - define waterloc <player.location.cursor_on[2]>
+                    - foreach <def[source].points_between[<def[waterloc]>]> {
+                        - if <def[value].material.name.is[==].to[air]> {
+                            - modifyblock <def[value]> stationary_water,8 no_physics
+                            - wait 1t
+                            - modifyblock <def[value]> air
+                        }
+                        else {
+                            - playeffect <def[value]> effect:drip_water quantity:5
+                        }                     
+                    }
+                    - flag <player> WaterWhipCooldown duration:15t
+                    - define path <player.location.direction.vector>
+                    - repeat 16 {
+                        - define distance <def[value]>
+                        - if <def[waterloc].add[<def[path].mul[<def[distance].add[1]>]>].material.name.is[!=].to[air]> {
+                            - queue clear
+                            - announce "stop!"
+                        }
+                        - if <def[waterloc].add[<def[path].mul[<def[distance]>]>].find.living_entities.within[1.5].size.is[!=].to[0]> {
+                            - foreach <def[waterloc].add[<def[path].mul[<def[distance]>]>].find.living_entities.within[1.5].exclude[<player>]> {
+                                - hurt 2 <def[value]>
+                            }
+                            - queue clear
+                        }
+                        - modifyblock <def[waterloc].add[<def[path].mul[<def[distance]>]>]> stationary_water,1
+                        - modifyblock <def[waterloc].add[<def[path].mul[<def[distance].add[1]>]>]> stationary_water,2
+                        - modifyblock <def[waterloc].add[<def[path].mul[<def[distance].sub[1]>]>]> stationary_water,3
+                        - modifyblock <def[waterloc].add[<def[path].mul[<def[distance].sub[2]>]>]> stationary_water,5
+                        - wait 0.5t
+                        - modifyblock <def[waterloc].add[<def[path].mul[<def[distance]>]>]> air
+                        - modifyblock <def[waterloc].add[<def[path].mul[<def[distance].add[1]>]>]> air
+                        - modifyblock <def[waterloc].add[<def[path].mul[<def[distance].sub[1]>]>]> air
+                        - modifyblock <def[waterloc].add[<def[path].mul[<def[distance].sub[2]>]>]> air
+                    }
+                }
+            }
+PhaseShift:
+    type: world
+    debug: false
+    events:
+        on player right clicks with item:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if <player.has_flag[WaterBubble]> {
+                - queue clear
+            }
+            - if <cuboid[<player.location.add[1,1,1]>|<player.location.add[-1,-1,-1]>].blocks.filter[material.name.is[!=].to[stationary_water]].size> == 0 {
+                - queue clear
+            }
+            - if <player.location.cursor_on[15].material.name.is[==].to[stationary_water]> {
+                - foreach <player.location.find.blocks[water|stationary_water].within[<player.flag[WaterIndex]>]> {
+                    - if <def[value].material.full.after[,]||0> >= 1 {
+                        - modifyblock <def[value]> m@ice
+                    }
+                    else {
+                        - modifyblock <def[value]> m@packed_ice
+                    }
+                }
+                - queue clear
+            }
+            - if <player.location.cursor_on[15].material.name.is[==].to[ice]> {
+                - foreach <player.location.find.blocks[ice].within[<player.flag[WaterIndex]>]> {
+                    - modifyblock <def[value]> stationary_water,5
+                }
+            }
+            - if <player.location.cursor_on[15].material.name.is[==].to[packed_ice]> {
+                - foreach <player.location.find.blocks[packed_ice].within[<player.flag[WaterIndex]>]> {
+                    - modifyblock <def[value]> stationary_water
+                }
+                - queue clear
+            }
+IceSpike:  
+  type: world  
+  debug: true 
+  events:  
+    on player starts sneaking:  
+    - if <player.flag[element]> == water && <player.has_flag[element_toggled].not> {  
+      - define blocks li@  
+      - define loc1 <player.location.cursor_on[3]>  
+      - define material <player.location.cursor_on[4].material> 
+      - wait 2s  
+      - if <player.flag[waterindex].matches[[1-3]]> { 
+      - define loc2 <player.location.cursor_on[9]> 
+      } 
+      else if <player.flag[waterindex].matches[[4-6]]> { 
+      - define loc2 <player.location.cursor_on[12]> 
+      }  
+      else if <player.flag[waterindex].matches[[7-9]]> { 
+      - define loc2 <player.location.cursor_on[15]> 
+      } 
+      - if <def[loc1]> == <def[loc2]> && <li@m@ice|m@packed_ice.contains[<def[material]>]> {   
+        - repeat 4 { 
+          - define blocks <def[blocks].include[<player.location.cursor_on[3].add[0,<def[value]>,0]>]>  
+          }  
+        - foreach <def[blocks]> {  
+          - modifyblock <def[value]> <def[material]>  
+          }  
+        }  
+        else if <def[loc1]> != <def[loc2]> && <li@m@ice|m@packed_ice.contains[<def[material]>]> {  
+          - define growth <def[loc1].points_between[<def[loc2]>].size.div[3].round_down> 
+          - foreach <def[loc1].points_between[<def[loc2]>]> { 
+            - if <player.flag[waterindex].matches[[7-9]]> { 
+              - if <def[loop_index]> <= <def[growth].div[2]> { 
+                - modifyblock <def[value].find.blocks[li@air|snow].within[2]> <def[material]> 
+                }  
+                else if <def[loop_index]> > <def[growth].div[2]> && <def[loop_index]> <= <def[growth].mul[2].add[1]> { 
+                - modifyblock <def[value].find.blocks[li@air|snow].within[1]> <def[material]> 
+                }  
+                else if <def[loop_index]> > <def[growth].mul[2].add[1]> { 
+                - modifyblock <def[value]> <def[material]> 
+                } 
+              } 
+              else if <player.flag[waterindex].matches[[4-6]]> { 
+                - if <def[loop_index]> <= <def[growth].div[2]> { 
+                  - modifyblock <def[value].find.blocks[li@air|snow].within[1]> <def[material]> 
+                  }  
+                  else if <def[loop_index]> > <def[growth].div[2]> && <def[loop_index]> <= <def[growth].mul[2].add[1]> { 
+                  - modifyblock <def[value].find.blocks[li@air|snow].within[1]> <def[material]> 
+                  }  
+                  else if <def[loop_index]> > <def[growth].mul[2].add[1]> { 
+                  - modifyblock <def[value]> <def[material]> 
+                  } 
+                } 
+              else if <player.flag[waterindex].matches[[1-3]]> { 
+                 - if <def[loop_index]> <= <def[growth].div[2]> { 
+                  - modifyblock <def[value].find.blocks[li@air|snow].within[1]> <def[material]> 
+                  }  
+                  else if <def[loop_index]> > <def[growth].div[2]> && <def[loop_index]> <= <def[growth].mul[2].add[1]> { 
+                  - modifyblock <def[value].find.blocks[li@air|snow].within[1]> <def[material]> 
+                  }  
+                  else if <def[loop_index]> > <def[growth].mul[2].add[1]> { 
+                  - modifyblock <def[value]> <def[material]> 
+                  } 
+                } 
+              } 
+            } 
+          } 
+        } 
+VineWhip:
+    type: world
+    debug: true
+    events:
+        on player right clicks block:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if !<player.has_flag[plantbending]> {
+                - queue clear
+            }
+            - define blocks li@leaves|cactus|birch_leaves|oak_leaves|acacia_leaves|darkoak_leaves|spruce_leaves|jungle_leaves|placed_oak_leaves|placed_birch_leaves|placed_spruce_leaves|placed_acacia_leaves|placed_darkoak_leaves|placed_jungle_leaves
+            - if <def[blocks].contains[<context.location.material.name>]> {
+                - define material <context.location.material.name>
+                - define loc2 <player.location.cursor_on[4]>
+                - wait 1t
+                - repeat 20 {
+                    - define range <el@4.add[<def[value].div[2]>].round_down>
+                    - define loc1 <def[loc2]>
+                    - define loc2 <player.location.cursor_on[<def[range]>]>
+                    - if <def[loc1].points_between[<def[loc2]>].is[==].to[li@]> {
+                        - modifyblock <def[loc1]> <def[material]>
+                        - modifyblock <def[loc2]> <def[material]>
+                    }
+                    else {
+                        - foreach <def[loc1].points_between[<def[loc2]>]> {
+                            - modifyblock <def[value]> <def[material]>
+                        }
+                    }
+                    - wait 1t
+                }
+            }
+PlantBlast:
+    type: world
+    debug: false
+    events:
+        on player left clicks block:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if !<player.has_flag[plantbending]> {
+                - queue clear
+            }
+            - if <li@leaves|cactus|birch_leaves|oak_leaves|acacia_leaves|darkoak_leaves|spruce_leaves|jungle_leaves|placed_oak_leaves|placed_birch_leaves|placed_spruce_leaves|placed_acacia_leaves|placed_darkoak_leaves|placed_jungle_leaves.contains[<context.location.material.name>]> {
+                - define PlantBlockLoc <context.location>
+                - define PlantBlock <context.location.material.name>
+                - modifyblock <def[PlantBlockLoc]> air
+                - spawn <def[PlantBlockLoc].center> e@falling_block,<def[PlantBlock]> save:PlantBlockEntity
+                - adjust <entry[PlantBlockEntity].spawned_entities.first> velocity:0,0.9,0
+                - wait 1t
+                - flag <player> PlantBlockInAir:<entry[PlantBlockEntity].spawned_entities.first> duration:2.3s
+            }
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if !<player.has_flag[plantbending]> {
+                - queue clear
+            }
+            - if <player.has_flag[PlantBlockInAir]> {
+                - ^define PlantBlock <player.flag[PlantBlockInAir]>
+                - ^flag <player> PlantBlockInAir:!
+                - adjust <def[PlantBlock]> velocity:<player.location.direction.vector.mul[2]>
+            }
+WaterIndex:
+    type: world
+    debug: false
+    events:
+        on player scrolls their hotbar:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - flag <player> WaterIndex:<context.new_slot>
+Renew:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if !<player.has_flag[healing]> {
+                - queue clear
+            }
+            - if <player.has_flag[RenewCooldown]> {
+                - queue clear
+            }
+            - if <player.item_in_hand.simple.is[==].to[i@potion]> {
+                - inventory set d:<player.inventory> slot:<player.item_in_hand.slot> origin:i@glass_bottle
+                - flag <player> RenewCooldown duration:8s
+                - repeat 5 {
+                    - heal 1
+                    - playeffect <player.location> effect:drip_water quantity:42
+                    - playeffect <player.location> effect:water_splash quantity:42
+                    - playeffect <player.location> effect:end_rod quantity:42
+                }
+                - playeffect <player.location> effect:end_rod quantity:42 data:1
+            }
+WaterJet:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if <cuboid[<player.location.add[1.5,1.5,1.5]>|<player.location.add[-1.5,-1.5,-1.5]>].blocks.filter[material.name.is[!=].to[stationary_water]].size> == 0 {
+                - repeat 10 {
+                    - playeffect <player.location.add[<player.location.direction.vector.mul[<def[value].div[2]>]>]> effect:water_bubble quantity:5
+                    - foreach <player.location.add[<player.location.direction.vector.mul[<def[value].div[2]>]>].find.entities.within[1.5].exclude[<player>]> {
+                        - hurt 2 <def[value]>
+                        - adjust <def[value]> velocity:<player.location.direction.vector.mul[1.4]>
+                    }
+                }
+            }
+HealingTouch:
+    type: world
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if !<player.has_flag[healing]> {
+                - queue clear
+            }
+            - if <player.has_flag[HealingTouchCooldown]> {
+                - queue clear
+            }
+            - if <player.item_in_hand.simple.is[==].to[i@potion]> && <server.list_online_players.contains[<player.target.name>]> {
+                - inventory set d:<player.inventory> slot:<player.item_in_hand.slot> origin:i@glass_bottle
+                - flag <player> HealingTouchCooldown duration:4s
+                - repeat 5 {
+                   - heal 1
+                    - playeffect <player.target.location> effect:drip_water quantity:42
+                   - playeffect <player.target.location> effect:water_splash quantity:42
+                   - playeffect <player.target.location> effect:end_rod quantity:42
+                   }
+               - playeffect <player.target.location> effect:end_rod quantity:42 data:1
+            }
+LifeOrb:
+    type: world
+    debug: false
+    events:
+        on player right clicks with potion:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if !<player.has_flag[healing]> {
+                - queue clear
+            }
+            - if <player.has_flag[LifeOrbCooldown]> {
+                - queue clear
+            }
+            - flag <player> LifeOrbCooldown duration:2s
+            - repeat 8 {
+                - playeffect <player.location.cursor_on[4]> effect:drip_water quantity:42 offset:0.5,0.5,0.5
+                - playeffect <player.location.cursor_on[4]> effect:water_splash quantity:42 offset:0.5,0.5,0.5
+                - playeffect <player.location.cursor_on[4]> effect:end_rod quantity:42 offset:0.5,0.5,0.5
+                - foreach <player.location.cursor_on[4].find.living_entities.within[1.5].exclude[<player>]> {
+                    - heal 1 <def[value]>
+                }
+                - wait 1t
+            }
+LifeWell:
+    type: world
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[water]> {
+                - queue clear
+            }
+            - if !<player.has_flag[healing]> {
+                - queue clear
+            }
+            - if <player.has_flag[LifeWellCooldown]> {
+                - queue clear
+            }
+            - flag <player> LifeWellCooldown duration:4s
+            - wait 0.3t
+            - if <player.item_in_hand.simple.is[==].to[i@potion]> && <player.location.material.name.is[==].to[stationary_water]> {
+                - while <player.is_sneaking> {
+                    - playeffect <player.location> effect:drip_water quantity:22 offset:5,0,5
+                    - playeffect <player.location> effect:water_splash quantity:22 offset:5,0,5
+                    - playeffect <player.location> effect:end_rod quantity:22 offset:5,0,5
+                    - foreach <player.location.find.living_entities.within[5].exclude[<player>]> {
+                        - heal 1 <def[value]>
+                    }
+                    - wait 1t
+                }
+            }        
+WaterSwim:
+    type: world
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.item_in_hand.simple.is[==].to[i@potion]> {
+                - queue clear
+            }
+            - if <player.flag[element]> != water {
+                - queue clear
+            }
+            - if <player.location.block.material.name> == stationary_water {
+                - flag <player> FastSwim
+            }
+            - while <player.has_flag[FastSwim]> {
+                - if <player.location.material.name.is[==].to[stationary_water]> {
+                    - adjust <player> "velocity:<player.location.direction.vector.mul[0.8]>"
+                }
+                - wait 0.1t
+            }
+        on player stops sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == water {
+                - flag <player> FastSwim:!
+            }
+###################################
+### Fire
+###################################
+FireDash:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireDashCooldown]> {
+                - queue clear
+            }
+            - foreach li@2,0,0|0,2,0|0,0,2|2,2,0|2,0,2|0,2,2|2,2,2|-2,0,0|0,-2,0|0,0,-2|-2,-2,0|-2,0,-2|0,-2,-2|-2,-2,-2|-2,2,0|2,-2,0|2,0,-2|-2,0,2|0,2,-2|0,-2,2|-2,2,2|2,-2,2|2,2,-2|-2,2,-2|-2,-2,2|2,-2,-2 {
+                - if <player.location.add[<def[value]>].material> != m@air {
+                    - flag <player> CanDash:true
+                }
+            }
+            - if !<player.is_on_ground> && <player.flag[element]> == fire && <player.location.cursor_on[4].material.name> == air && <player.flag[CanDash]> {
+                - playeffect <player.location.below> effect:explosion_large quantity:4
+                - adjust <player> "velocity:<player.location.direction.vector.mul[1.2]>"
+                - flag <player> FireDashCooldown duration:2.5s
+                - repeat 11 {
+                    - playeffect <player.location> effect:flame quantity:5
+                    - wait 1t
+                }
+            }
+            - flag <player> CanDash:!
+FireBlast:
+    type: world 
+    debug: false 
+    events: 
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[fire]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireBlastCooldown]> {
+                - queue clear
+            }
+            - if <player.is_sprinting> {
+                - queue clear
+            }
+            - if <player.location.cursor_on[4].material.name.is[!=].to[air]> {
+                - queue clear
+            }
+            - flag <player> FireBlastCooldown duration:15t
+            - repeat 1 {
+                - foreach <player.location.cursor_on[1].add[0,-0.7,0].points_between[<player.location.cursor_on[7]>]> {
+                    - playeffect <def[value]> effect:flame quantity:42 offset:<util.e.power[<def[loop_index].mul[0.42]>].mul[0.1]>
+                    - burn <def[value].find.living_entities.within[<util.e.power[<def[loop_index].mul[0.42]>].mul[0.1]>].exclude[<player>]> duration:0.5s
+                    - hurt 2 <def[value].find.living_entities.within[<util.e.power[<def[loop_index].mul[0.42]>].mul[0.1]>].exclude[<player>]> source:<player> cause:FIRE 
+                    - wait 0.2t 
+                }
+            }
+FireBlock:
+    type: world
+    debug: false
+    events:
+        on player right clicks with item:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[fire]> {
+                - queue clear
+            }
+            - ^foreach <player.location.find.entities.within[6]> {
+                - ^if <def[value].name.is[==].to[small_fireball]> {
+                    - ^remove <def[value]>
+                    - playeffect <def[value].location> effect:large_smoke quantity:3
+                }
+            }
+            - playeffect <player.location.cursor_on[1]> effect:flame quantity:27
+            - foreach <player.location.find.blocks[fire].within[3]> {
+                - playeffect <def[value]> effect:large_smoke quantity:3
+                - modifyblock <def[value]> air naturally
+            }
+        on player damaged:
+            - if <server.list.online_players.contains[<context.damager>]> && <context.cause.is[==].to[FIRE]> && <player.has_flag[FireBlock]> {
+                - determine cancelled
+            }       
+# FireBlast:
+    # type: world
+    # debug: false
+    # events:
+        # on player left clicks:
+            # - if <player.has_flag[element_toggled]> {
+                # - queue clear
+            # }
+            # - if <player.has_flag[FireBlastCooldown]> {
+                # - queue clear
+            # }
+            # - if <player.flag[element]> == fire && <player.flag[sprinting]> == false && <player.is_on_ground> && <player.location.cursor_on[4].material.name> == air && !<player.is_sneaking> {
+                # - flag <player> FireBlastCooldown duration:3s
+                # - repeat 15 {
+                    # - playeffect <player.location.add[<player.location.direction.vector.mul[<def[value].div[2]>]>]> effect:flame quantity:37 offset:0.3,0.3,0.3
+                    # - burn <player.location.add[<player.location.direction.vector.mul[<def[value].div[2]>]>].find.living_entities.within[1.5].exclude[<player>]> duration:1s
+                    # - hurt 2 <player.location.add[<player.location.direction.vector.mul[<def[value].div[2]>]>].find.living_entities.within[1.5].exclude[<player>]>
+                    # - wait 0.05t
+                # }
+            # }
+FireWheel:
+    type: world
+    debug: false
+    events:
+        on player right clicks with item:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireWheelCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == fire && <player.location.cursor_on[2].material.name> != air {
+                - define FireWheelStarterLoc l@0,1.5,0,<player.location.world.name>
+                - define FireWheelLocs li@
+                - define FireWheelCenter <player.location>
+                - repeat 120 {
+                    - define FireWheelLocs <def[FireWheelLocs].include[<def[FireWheelStarterLoc].rotate_around_x[<util.tau.div[120].mul[<def[value]>]>]>]>
+                }
+                - flag <player> FireWheelCooldown duration:5s
+                - repeat 10 {
+                    - playeffect <def[FireWheelLocs].get[1].to[<def[value].mul[6]>].parse[rotate_around_y[<player.location.yaw.raw.mul[-1].to_radians>]].parse[add[<player.location>]]> effect:flame quantity:1 offset:0,0,0
+                    - wait 1t
+                }
+                - define FireWheelOrigin <player.location>
+                - define FireWheelAngle <player.location.yaw.raw>
+                - repeat 30 {
+                    - define FireWheelCenter <player.location.with_pose[0,<def[FireWheelAngle]>].direction.vector.mul[<def[value].div[2]>].add[<def[FireWheelOrigin]>]>
+                    - if <def[FireWheelCenter].block.material.name> != air {
+                        - queue clear
+                    }
+                    - playeffect <def[FireWheelLocs].parse[rotate_around_y[<def[FireWheelAngle].mul[-1].to_radians>]].parse[add[<def[FireWheelCenter]>]]> effect:flame quantity:1 offset:0,0,0
+                    - foreach <def[FireWheelLocs].parse[rotate_around_y[<def[FireWheelAngle].mul[-1].to_radians>]].parse[add[<def[FireWheelCenter]>]]> {
+                        - hurt 4 <def[value].find.living_entities.within[0.5].exclude[<player>]> source:<player> cause:FIRE
+                        - burn <def[value].find.living_entities.within[0.5].exclude[<player>]> duration:2s
+                    }
+                    - wait 0.5t
+                }
+            }
+FireRing:
+    type: world
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireRingCooldown]> {
+                - queue clear
+            }
+            - if <player.has_flag> FireChargeActive {
+                - queue clear
+            }
+            - if <player.flag[element].is[==].to[fire]> && <player.location.cursor_on[4].material.name.is[!=].to[air]> {
+                - flag <player> FireRingActive:<queue>
+                - flag <player> FireRingQueue:<queue>
+                - flag <player> FireRingCooldown duration:10s
+                - define FireRingBaseLoc l@0,0,4,<player.location.world.name>
+                - define FireRingLocs li@
+                - define FireRingCenter <player.location>
+                - repeat 60 {
+                    - define FireRingLocs <def[FireRingLocs].include[<def[FireRingBaseLoc].rotate_around_y[<util.tau.div[60].mul[<def[value]>]>]>]>
+                }
+                - wait 1t
+                - repeat 35 {
+                    - wait 1t
+                    - if !<player.is_sneaking> || !<player.has_flag[FireRingActive]> {
+                        - repeat stop
+                        - queue clear
+                    }
+                    - foreach <player.location.find.entities.within[4.5].exclude[<player>]> {
+                        - burn <def[value]>
+                    }
+                    - define FireRingCenter <player.location>
+                    - playeffect <def[FireRingLocs].parse[add[<def[FireRingCenter]>]]> effect:flame quantity:1 offset:0.3,3,0.3
+                }
+                - flag <player> FireRingActive:!
+            }
+        on player stops sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if !<player.has_flag[FireRingActive]> {
+                - queue clear
+            }
+            - if !<player.has_flag[FireRingQueue]> {
+                - queue clear
+            }
+            - flag <player> FireRingActive:<queue>
+            - if <player.flag[element].is[==].to[fire]> {
+                - define FireRingLocs li@
+                - define FireRingBaseLoc l@0,0,4,<player.location.world.name>
+                - define FireRingCenter <player.location>
+                - repeat 6 {
+                    - define FireRingLocs li@
+                    - define FireRingBaseLoc l@0,0,<def[value].add[4]>,<player.location.world.name>
+                    - define RadialThickness <def[value]>
+                    - repeat <def[RadialThickness].mul[30]> {
+                        - define FireRingLocs <def[FireRingLocs].include[<def[FireRingBaseLoc].rotate_around_y[<util.tau.div[<def[RadialThickness].mul[30]>].mul[<def[value]>]>]>]>
+                    }
+                    - repeat 2 {
+                        - playeffect <def[FireRingLocs].parse[add[<def[FireRingCenter]>]]> effect:flame quantity:1 offset:0.2,3,0.2 visibility:20
+                        - foreach <player.location.find.living_entities.within[<def[value].add[4]>].exclude[<player>]> {
+                            - hurt 2 <def[value]> source:<player> cause:FIRE
+                            - burn <def[value]>
+                        }
+                    }
+                }
+            }
+            - flag <player> FireRingQueue:!
+            - flag <player> FireRingActive:!
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag> FireChargeActive {
+                - queue clear
+            }
+            - if !<player.has_flag[FireRingQueue]> {
+                - queue clear
+            }
+            - queue <player.flag[FireRingQueue]> clear
+            - if <queue.exists[<player.flag[FireRingQueue].after[q@]>]> {
+                - flag <player> FireRingQueue:!
+                - queue <player.flag[FireRingQueue]> clear
+            }
+            - flag <player> FireRingActive:<queue>
+            - if <player.flag[element].is[==].to[fire]> {
+                - define origin l@-<util.e.div[3].sin.mul[6]>,0,<util.e.div[3].cos.mul[6]>,<player.location.world.name>
+                - define list li@
+                - define path <player.location>
+                - repeat 19 {
+                    - define list <def[list].include[<def[origin].rotate_around_y[<util.tau.div[60].mul[<def[value].sub[1]>]>]>]>
+                }
+                - repeat 12 {
+                    - define path <player.location.points_between[<player.location.cursor_on[20]>].get[<def[value]>]>
+                    - playeffect <def[list].parse[rotate_around_y[<player.location.yaw.raw.to_radians.mul[-1]>]].parse[add[<def[path]>]]> effect:flame offset:0,2,0 data:0 quantity:10
+                    - foreach <player.location.points_between[<player.location.cursor_on[20]>].get[<def[value]>]> {
+                        - foreach <def[value].find.living_entities.within[3].exclude[<player>]> {
+                            - hurt 3 <def[value]> source:<player> cause:FIRE
+                            - burn <def[value]>
+                        }
+                    }
+                    - wait 1t
+                }
+            }
+            - flag <player> FireRingQueue:!
+            - flag <player> FireRingActive:!
+        on player right clicks with item:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag> FireChargeActive {
+                - queue clear
+            }
+            - if !<player.has_flag[FireRingQueue]> {
+                - queue clear
+            }
+            - queue <player.flag[FireRingQueue]> clear
+            - if <queue.exists[<player.flag[FireRingQueue].after[q@]>]> {
+                - flag <player> FireRingQueue:!
+                - queue <player.flag[FireRingQueue]> clear
+            }
+            - flag <player> FireRingActive:<queue>
+            - if <player.flag[element].is[!=].to[fire]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireRingActive]> {
+                - define FireLineOrigin <player.location.cursor_on[2]>
+                - define FireLineEnd <player.location.cursor_on[20]>
+                - define FireLineLocs li@
+                - foreach <def[FireLineOrigin].points_between[<def[FireLineEnd]>]> {
+                    - define FireLineLoc <def[value]>
+                    - while <def[FireLineLoc].below.material.name> == air {
+                        - define FireLineLoc <def[FireLineLoc].below>
+                    }
+                    - define FireLineLocs <def[FireLineLocs].include[<def[FireLineLoc]>]>
+                }
+                - foreach <def[FireLineLocs]> {
+                    - modifyblock <def[value]> fire naturally
+                    - wait 0.5t
+                }
+            }
+            - flag <player> FireRingQueue:!
+            - flag <player> FireRingActive:!
+FireManipulation:
+    type: world
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireRingActive]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireManipulationCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == fire && <player.location.cursor_on[4].material.name> == air {
+                - flag <player> FireChargeActive:<queue>
+                - flag <player> FireManipulationQueue:<queue>
+                - flag <player> FireManipulationCooldown duration:10s
+                - flag <player> FlameCharge:0
+                # Fire Charge Start
+                - repeat 4 {
+                    - playeffect <player.location.cursor_on[2].add[0,-0.5,0]> effect:flame quantity:30 offset:2,2,2
+                    - wait 0.1t
+                }
+                - repeat 64 {
+                    - flag <player> FlameCharge:+:1
+                    - playeffect <player.location.cursor_on[2].add[0,-0.5,0]> effect:flame quantity:<def[value].mul[2].add[10]> offset:<el@16.div[<def[value]>]>,<el@16.div[<def[value]>]>,<el@16.div[<def[value]>]>
+                    - if !<player.is_sneaking> && <player.flag[FlameCharge]> < 5 {
+                        - flag <player> FlameCharge:!
+                        - queue clear
+                    }
+                    - wait 0.5t
+                }
+                - playeffect <player.location.cursor_on[2].add[0,-0.5,0]> effect:large_smoke data:1 quantity:99
+                - repeat 77 {
+                    - playeffect <player.location.cursor_on[2].add[0,-0.5,0]> effect:flame quantity:128 offset:0.25,0.25,0.25
+                    - if !<player.has_flag[FlameCharge]> {
+                        - queue clear
+                    }
+                    - if !<player.is_sneaking> && <player.flag[FlameCharge]> < 5 {
+                        - flag <player> FlameCharge:!
+                        - queue clear
+                    }
+                    - wait 0.5t
+                }
+                - flag <player> FlameCharge:!
+            }
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireRingActive]> {
+                - queue clear
+            }
+            - flag <player> FireChargeActive:<queue>
+            - if <queue.exists[<player.flag[FireManipulationQueue].after[q@]>]||false> {
+                - queue <player.flag[FireManipulationQueue]> clear
+            }
+            - if <player.has_flag[FlameCharge]> {
+                - flag <player> FireStreamCharge:<player.flag[FlameCharge]>
+                - flag <player> FlameCharge:!
+            }
+            - if <player.flag[FireStreamCharge]||0> > 5 && <player.has_flag[FireChargeActive]> {
+                - repeat <player.flag[FireStreamCharge].mul[2]> {
+                    - foreach <player.location.cursor_on[1].add[0,-0.7,0].points_between[<player.location.cursor_on[15]>]> {
+                        - playeffect <def[value]> effect:flame quantity:15 offset:<util.e.power[<def[loop_index].mul[0.2]>].mul[0.09]>
+                        - burn <def[value].find.living_entities.within[<util.e.power[<def[loop_index].mul[0.2]>].mul[0.2]>].exclude[<player>]> duration:0.5s
+                        - hurt 2 <def[value].find.living_entities.within[<util.e.power[<def[loop_index].mul[0.2]>].mul[0.2]>].exclude[<player>]> source:<player> cause:FIRE
+                    }
+                    - wait 0.05t
+                    - flag <player> FireStreamCharge:-:1
+                }
+                - flag <player> FireStreamCharge:!
+            }
+            - flag <player> FireChargeActive:!
+            - flag <player> FireManipulationQueue:!
+        on player stops sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireRingActive]> {
+                - queue clear
+            }
+            - flag <player> FireChargeActive:<queue>
+            - if <queue.exists[<player.flag[FireManipulationQueue].after[q@]>]||false> {
+                - queue <player.flag[FireManipulationQueue]> clear
+            }
+            - if <player.has_flag[FlameCharge]> {
+                - flag <player> FireBlastCharge:<player.flag[FlameCharge]>
+                - flag <player> FlameCharge:!
+            }
+            - if <player.flag[FireBlastCharge]||0> > 5 && <player.flag[element]> == fire && <player.location.cursor_on[4].material.name> == air && <player.has_flag[FireChargeActive]> {
+                - foreach <player.location.points_between[<player.location.cursor_on[15]>]> {
+                    - playeffect <def[value]> effect:flame quantity:99
+                    - hurt <player.flag[FireBlastCharge].div[10]> <def[value].find.living_entities.within[1.5].exclude[<player>]> source:<player> cause:FIRE
+                    - burn <def[value].find.living_entities.within[1.5].exclude[<player>]> duration:1.5s
+                    - if <def[value]> == <player.location.points_between[<player.location.cursor_on[15]>].last> {
+                        - explode <def[value]> power:1
+                        - playeffect <def[value]> effect:explosion_large quantity:7
+                    }
+                }
+                - flag <player> FireBlastCharge:!
+            }
+            - flag <player> FireChargeActive:!
+            - flag <player> FireManipulationQueue:!
+
+
+# foreach_thing:
+# - foreach <def[1].points_between[<def[2]>]> {
+    # - animation yay
+    # - wait 1t
+# }
+# events:
+    # on event:
+    # - repeat X {
+        # - run locally foreach_thing instantly def:<loc1>|<loc2>
+        # - wait 1t
+    # }
+
+FireKick:
+    type: world
+    debug: false
+    events:
+        on player right clicks with item:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireKickCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == fire && <player.flag[sprinting]> == true {
+                - flag <player> FireKickCooldown duration:1s
+                - foreach <player.location.below.points_between[<player.location.cursor_on[11].below>]> {
+                    - playeffect <def[value]> effect:flame quantity:15 offset:1,0.4,1
+                    - hurt 2 <def[value].find.living_entities.within[1.5].exclude[<player>]> source:<player>
+                    - burn <def[value].find.living_entities.within[1.5].exclude[<player>]> duration:0.5s
+                    - wait 0.1t
+                }
+            }
+FirePunch:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FirePunchCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == fire && <player.flag[sprinting]> == true  && <player.is_on_ground> {
+                - flag <player> FirePunchCooldown duration:1s
+                - shoot e@small_fireball gravity:0 speed:3
+            }
+FireBomb:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireBombCooldown]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireRingActive]> {
+                - queue clear
+            }
+            - if <player.has_flag[FireWallActive]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == fire && <player.flag[sprinting]> == false && <player.location.cursor_on[4].material.name||air> != air {
+                - flag <player> FireBombCooldown duration:2s
+                - define FireBombLoc <player.location.cursor_on[6]> 
+                - playeffect <def[FireBombLoc]> effect:explosion_large quantity:5
+                - playeffect <def[FireBombLoc]> effect:smoke_large quantity:99 data:1
+                - playeffect <def[FireBombLoc]> effect:flame quantity:15
+                - foreach <def[FireBombLoc].find.living_entities.within[5].exclude[<player>]> { 
+                    - adjust <def[value]> "velocity:<def[value].location.sub[<def[FireBombLoc]>].normalized.mul[0.8].add[0,0.6,0]>"
+                    - hurt 3 <def[value]> source:<player> cause:FIRE
+                }
+                - if !<player.is_on_ground> {
+                    - adjust <player> "velocity:<player.location.sub[<def[FireBombLoc]>].normalized.mul[0.6].add[0,0.3,0]>"
+                }
+            }
+#####################################
+#### Air
+#####################################
+SlowFall:
+    type: world
+    debug: false
+    events:
+        on player damaged:
+            - if <context.cause.is[==].to[FALL]> && <player.flag[element].is[==].to[air]> {
+                - flag <player> SlowFall:!
+                - determine passively cancelled
+                - playeffect <player.location> effect:cloud data:1 quantity:2 
+                - foreach <player.location.find.living_entities.within[3].exclude[<player>]> {
+                    - adjust <def[value]> "velocity:<def[value].location.sub[<player.location>].normalized.mul[1].add[0,1,0]>"
+                }
+            }
+AirCyclone:
+    type: world
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[air]> {
+                - queue clear
+            }
+            - if <player.location.cursor_on[5].material.name.is[==].to[air]> {
+                - queue clear
+            }
+            - if <player.has_flag[AirCycloneCooldown]> {
+                - queue clear
+            }
+            - wait 0.1t
+            - flag <player> CycloneCharge:0
+            - while <player.is_sneaking.is[==].to[true]> {
+                - flag <player> CycloneCharge:+:1
+                - define CycloneLocs li@
+                - define CycloneCircle li@
+                - repeat 15 {
+                    - define CycloneLoop <def[value]>
+                    - define CycloneBaseLoc l@0,0,<def[CycloneLoop].div[11].add[1]>,<player.location.world.name>
+                    - repeat 8 {
+                        - define CycloneCircle <def[CycloneCircle].include[<def[CycloneBaseLoc].rotate_around_y[<util.tau.div[8].mul[<def[value]>]>]>]>
+                    }
+                    - define CycloneLoc <def[CycloneCircle].parse[add[<player.location.cursor_on[5].sub[0,2,0].add[<util.random.decimal[0].to[0.7]>,<def[CycloneLoop].div[1.7]>,<util.random.decimal[0].to[0.7]>]>]]>
+                    - define CycloneLocs <def[CycloneLocs].include[<def[CycloneLoc]>]>
+                }
+                - define location <player.location.cursor_on[5].sub[0,2,0]>
+                - foreach <def[CycloneLocs]> {
+                    - playeffect <def[value]> effect:cloud quantity:1 offset:0,0,0
+                    - foreach <def[value].find.entities.within[4].exlude[<player>]> {
+                        - adjust <def[value]> velocity:<def[value].location.face[<def[location]>].direction.vector.div[6]>
+                    }
+                }
+                - wait 0.1t
+            }
+        on player stops sneaking:
+            - if <player.has_flag[CycloneCharge]> {
+                - flag <player> AirCycloneCooldown duration:9s
+                - ^define CycloneLocs li@
+                - ^define CycloneCircle li@
+                - repeat 15 {
+                    - ^define CycloneLoop <def[value]>
+                    - ^define CycloneBaseLoc l@0,0,<def[CycloneLoop].div[11].add[1]>,<player.location.world.name>
+                    - repeat 8 {
+                        - ^define CycloneCircle <def[CycloneCircle].include[<def[CycloneBaseLoc].rotate_around_y[<util.tau.div[8].mul[<def[value]>]>]>]>
+                    }
+                    - ^define CycloneLoc <def[CycloneCircle].parse[add[<player.location.cursor_on[3].sub[0,1,0].add[<util.random.decimal[0].to[0.7]>,<def[CycloneLoop].div[1.7]>,<util.random.decimal[0].to[0.7]>]>]]>
+                    - ^define CycloneLocs <def[CycloneLocs].include[<def[CycloneLoc]>]>
+                }
+                - define CycloneOrigin <player.location>
+                - repeat <player.flag[CycloneCharge].mul[4]> {
+                    - define LoopValue <def[value]>
+                    - foreach <def[CycloneLocs]> {
+                        - playeffect <def[value].add[<def[CycloneOrigin].direction.vector.mul[<def[LoopValue].div[2]>]>]> effect:cloud quantity:1 offset:0,0,0
+                            - foreach <def[value].add[<def[CycloneOrigin].direction.vector.mul[<def[LoopValue].div[2]>]>].find.entities.within[4].exclude[<player>]> {
+                                - adjust <def[value]> velocity:<def[value].location.with_pose[0,<def[value].location.pitch.add[90]>].direction.vector.mul[1.7]>
+                            }
+                    }
+                    - wait 0.1t
+                }
+                - flag <player> CycloneCharge:!
+            } 
+# Tornado gets bigger the higher it goes
+# Height 10/11 blocks
+# base radius of 1 block
+# hold shift accrues charge
+# while holding shift, cyclone follows cursor
+# on release, cyclone moves in straight line until it runs out of charge
+# small forming animation
+# maybe animated tornado?????
+            
+AirPunch:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[AirPunchCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air && <player.item_in_hand> != <i@GliderStaff> && <player.flag[sprinting]> == true {
+                - flag <player> AirPunchCooldown duration:0.5s
+                - foreach <player.location.points_between[<player.location.cursor_on>]> {
+                    - playeffect <def[value]> effect:cloud quantity:5 offset:0.2,0.2,0.2
+                    - hurt 2 <def[value].find.living_entities.within[1.5].exclude[<player>]> source:<player>
+                    - foreach <def[value].find.blocks[fire].within[3]> {
+                        - modifyblock <def[value]> air
+                    }
+                }
+            }
+
+AirKick:
+    type: world
+    debug: false
+    events:
+        on player right clicks with item:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[AirKickCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air && <player.flag[sprinting]> == true && <context.item> != <i@GliderStaff> {
+                - flag <player> AirKickCooldown duration:1s
+                - foreach <player.location.below.points_between[<player.location.cursor_on.below>]> {
+                    - playeffect <def[value]> effect:cloud quantity:10 offset:0.8,0.4,0.8
+                    - hurt 2 <def[value].find.living_entities.within[1.5].exclude[<player>]> source:<player>
+                    - foreach <def[value].find.blocks[fire].within[3]> {
+                        - modifyblock <def[value]> air
+                    }
+                }
+            }
+AirBurst:
+    type: world
+    debug: false
+    events:
+        on player left clicks block:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[AirBurstCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air && <player.is_on_ground> && <player.item_in_hand> != <i@GliderStaff> {
+                - flag <player> AirBurstCooldown duration:2s
+                - playeffect <player.location.cursor_on> effect:cloud data:1 quantity:40
+                - foreach <def[value].find.blocks[fire].within[7]> {
+                    - modifyblock <def[value]> air
+                }
+                - foreach <player.location.find.living_entities.within[7].exclude[<player>]> {
+                    - adjust <def[value]> "velocity:<def[value].location.sub[<player.location>].normalized.mul[2].add[0,1,0]>"
+                }
+            }            
+AirBreath:
+    type: world
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[AirBreathCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air && <player.item_in_hand> != <i@GliderStaff> && <player.is_on_ground> && <player.location.cursor_on[6].material.name.is[==].to[air]> {
+                - flag <player> AirBreathing
+                - repeat 24 {
+                    - foreach <player.location.add[0,0.5,0].points_between[<player.location.cursor_on[12]>]> {
+                        - playeffect <def[value]> effect:cloud quantity:5
+                        - foreach <def[value].find.blocks[fire].within[3]> {
+                            - modifyblock <def[value]> air
+                        }
+                        - foreach <def[value].find.living_entities.within[1].exclude[<player>]> {
+                            - adjust <def[value]> "velocity:<def[value].location.sub[<player.location>].normalized.mul[1.5].add[0,0.5,0]>"
+                        }
+                        # else {
+                            # - if <cuboid[<player.location.cursor_on.add[1,1,1]>|<player.location.cursor_on.add[-1,-1,-1]>].blocks.filter[material.name.is[!=].to[air]].size> != 0 && <player.has_flag[AirBreathing]> {
+                                # - adjust <player> "velocity:<player.location.sub[<player.location.cursor_on>].normalized.mul[1.5].add[0,0.3,0]>"
+                            # }
+                        # }
+                    }
+                    - wait 1t
+                    - if !<player.has_flag[AirBreathing]> {
+                        - repeat stop
+                    }
+                }
+                - flag <player> AirBreathCooldown duration:4s
+                - flag <player> AirBreathing:!
+            }
+        on player stops sneaking:
+            - if <player.has_flag[AirBreathing]> {
+                - flag <player> AirBreathing:!
+            }
+AirSpout:
+    type: world
+    debug: false
+    events:
+        on player right clicks block:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air && !<player.has_flag[OnSpout]||null> && <player.item_in_hand> != <i@GliderStaff> {
+                - adjust <player> "can_fly:true"
+                - adjust <player> "flying:true"
+                - flag <player> OnSpout:true
+                - flag <player> ToggleSpoutState duration:10t
+            }
+        on player right clicks with item:
+            - if !<player.is_on_ground> && <player.flag[OnSpout]> && !<player.has_flag[ToggleSpoutState]> && <context.item> != <i@GliderStaff> {
+                - flag <player> OnSpout:!
+                - adjust <player> "flying:false"
+                - adjust <player> "can_fly:false"
+            }
+        on player walks:
+            - if <player.location.points_between[<player.location.with_pose[90,0].precise_cursor_on[100]>].size> > 9 && <player.flag[OnSpout]||false> == true {
+                - flag <player> OnSpout:!
+                - adjust <player> "flying:false"
+                - adjust <player> "can_fly:false"
+            }
+            - if <player.flag[OnSpout]||false> == true && !<player.has_flag[SpoutParticles]> {
+                - repeat 999999 {
+                    - playeffect <player.location.below.points_between[<player.location.with_pose[90,0].precise_cursor_on[100]>]> effect:cloud quantity:5
+                    - flag <player> SpoutParticles:true duration:1s
+                    - if <player.flag[OnSpout]||false> == false {
+                        - repeat stop
+                    }
+                    - wait 1t
+                }
+            }        
+AirBlast:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air && <player.is_on_ground> && <player.flag[sprinting]> == false && <player.item_in_hand> != <i@GliderStaff> {
+                - foreach <player.location.points_between[<player.location.cursor_on>]> {
+                    - playeffect <def[value]> effect:cloud quantity:15
+                    - foreach <def[value].find.blocks[fire].within[3]> {
+                        - modifyblock <def[value]> air
+                    }
+                    - foreach <def[value].find.entities.within[1].exclude[<player>]> {
+                        - adjust <def[value]> "velocity:<def[value].location.sub[<player.location>].normalized.mul[2].add[0,0.5,0]>"
+                    }
+                }
+            }
+AirSucc:
+    type: world
+    debug: false
+    events:
+        on player right clicks with item:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air && <player.is_on_ground> && <player.flag[sprinting]> == false && <context.item> != <i@GliderStaff> {
+                - foreach <player.location.points_between[<player.location.cursor_on>].reverse> {
+                    - playeffect <def[value]> effect:cloud quantity:5
+                    - foreach <def[value].find.entities.within[1].exclude[<player>]> {
+                        - adjust <def[value]> "velocity:<player.location.sub[<def[value].location>].normalized.mul[1.2].add[0,0.5,0]>"
+                    }
+                    - wait 1t
+                }
+            }
+AirJump:
+    type: world
+    debug: false
+    events:
+        on player left clicks:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[OnSpout]> {
+                - queue clear
+            }
+           
+            - if !<player.is_on_ground> && <player.flag[element]> == air && <player.item_in_hand> != <i@GliderStaff> && <cuboid[<player.location.add[1.5,1.5,1.5]>|<player.location.sub[1.5,1.5,1.5]>].blocks.filter[material.name.is[!=].to[air]].size> != 0 {
+                - playeffect <player.location.below> effect:cloud quantity:15
+                - adjust <player> "velocity:<player.location.direction.vector.mul[2]>"
+            }
+AirShield:
+    type: world
+    debug: false
+    events:
+        on player right clicks with item:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[AirShieldCooldown]> {
+                - queue clear
+            }
+            - if !<player.is_on_ground> && <player.flag[element]> == air && <player.flag[sprinting]> == false && <player.location.cursor_on[4].material> == m@air && !<player.has_flag[OnSpout]> && <context.item> != <i@GliderStaff> {
+                - flag <player> AirShieldHealth:9
+                - repeat 7 {
+                    - foreach <player.location.find.entities.within[1.5].exclude[<player>]> {
+                        - adjust <def[value]> "velocity:0,-4,0"
+                    }
+                    - playeffect <player.location> effect:cloud quantity:99
+                    - if !<player.has_flag[AirShieldHealth]> {
+                        - repeat stop
+                    }
+                    - wait 2t
+                }
+                - flag <player> AirShieldHealth:!
+                - flag <player> AirShieldCooldown duration:3s
+            }
+        on player damaged:
+            - if <context.entity.has_flag[AirShieldHealth]> {
+                - flag <context.entity> AirShieldHealth:-:<context.damage>
+                - if <context.entity.flag[AirShieldHealth]> >= 0 {
+                    - determine cancelled
+                }
+                else {
+                    - flag <context.entity> AirShieldHealth:!
+                }
+            }
+        on player walks:
+            - if <player.flag[AirShieldHealth]||2> < 1 {
+                - flag <player> AirShieldHealth:!
+            }
+AirGlide:
+    type: world
+    debug: false
+    events:
+        on player right clicks with GliderStaff:
+            - if <player.flag[IsGliding]> {
+                - inventory set "d:<player.inventory>" "slot:39" "origin:i@air"
+                - adjust <player> "gliding:false"
+                - flag <player> IsGliding:!
+                - queue clear
+            }
+            - if <player.has_flag[element_toggled]> && !<player.flag[IsGliding]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air {
+                - playeffect <player.location> effect:cloud quantity:5
+                - adjust <player> "velocity:<player.location.direction.vector.add[0,1,0]>"
+                - wait 5t
+                - flag <player> IsGliding
+                - inventory set "d:<player.inventory>" "slot:39" "origin:i@elytra"
+                - adjust <player> "gliding:true"
+                - while <player.flag[IsGliding]> {
+                    - if <cuboid[<player.location.add[0.5,0.5,0.5]>|<player.location.add[-0.5,-0.5,-0.5]>].blocks.filter[material.name.is[!=].to[air]].size> != 0 {
+                        - hurt 4 <player>
+                        - inventory set "d:<player.inventory>" "slot:39" "origin:i@air"
+                        - adjust <player> "gliding:false"
+                        - flag <player> IsGliding:!
+                        - queue clear 
+                    }
+                    - if !<player.inventory.list_contents.contains[<i@GliderStaff>]> {
+                        - inventory set "d:<player.inventory>" "slot:39" "origin:i@air"
+                        - adjust <player> "gliding:false"
+                        - flag <player> IsGliding:!
+                        - queue clear    
+                    }
+                    - playeffect <player.location> effect:cloud quantity:4
+                    - adjust <player> "velocity:<player.location.direction.vector>"
+                    - wait 1t
+                }
+            }
+        on player clicks in inventory:
+            - if <context.item> == i@elytra && <player.has_flag[IsGliding]> {
+                - determine cancelled
+            }
+        on player swaps items:
+            - if <context.main.is[==].to[i@elytra].or[<context.offhand.is[==].to[i@elytra]>]> {
+                - determine cancelled
+            }
+        on player drags in inventory:
+            - if <context.item> == i@elytra {
+                - determine cancelled
+            }
+AirStomp:
+    type: world
+    debug: false
+    events:
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.has_flag[AirStompCooldown]> {
+                - queue clear
+            }
+            - if <player.flag[element]> == air && <player.item_in_hand> == <i@GliderStaff> {
+                - flag <player> AirStompCooldown duration:6s
+                - playeffect <player.location> effect:explosion_large quantity:17
+                - playeffect <player.location> effect:cloud quantity:50
+                - playeffect <player.location> effect:smoke_large data:1 quantity:999 
+                - foreach <player.location.find.living_entities.within[5].exclude[<player>]> {
+                    - hurt 5 <def[value]> source:<player>
+                    - adjust <def[value]> "velocity:<def[value].location.sub[<player.location>].normalized.mul[0.9].add[0,1,0]>"
+                }
+            }
+AirBlade:
+    type: world 
+    debug: false
+    events: 
+        on player left clicks with GliderStaff:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <player.flag[element].is[!=].to[air]> {
+                - queue clear
+            }
+            - if <player.has_flag[AirBladeCooldown]> {
+                - queue clear
+            }
+            - define AirBladeLoc1 <player.eye_location.precise_cursor_on[3].sub[<player.eye_location>]||<player.eye_location.direction.vector.mul[3]>> 
+            - wait 0.5s
+            - define AirBladeLoc2 <player.eye_location.precise_cursor_on[3].sub[<player.eye_location>]||<player.eye_location.direction.vector.mul[3]>> 
+            - define effect_locs <def[AirBladeLoc1].points_between[<def[AirBladeLoc2]>].distance[0.3].parse[normalize.mul[3].add[<player.eye_location.sub[0,1,0]>]]>
+            - define AirBladeDirection <def[effect_locs].get[<def[effect_locs].size.div[2].round>].sub[<player.location>].normalize>
+            - flag <player> AirBladeCooldown duration:3s
+            - repeat 35 {
+                - playeffect <def[effect_locs].parse[add[<def[AirBladeDirection].mul[<def[value]>]>]]> effect:cloud quantity:8 offset:0,0,0
+                - foreach <def[effect_locs].parse[add[<def[AirBladeDirection].mul[<def[value]>]>]]> {
+                    - foreach <def[value].find.living_entities.within[1.5].exclude[<player>]> {
+                        - hurt 3 <def[value]>
+                    }
+                }
+                - wait 0.3t 
+            }
+    # type: world
+    # debug: false
+    # events:
+        # on player left clicks with GliderStaff:
+            # - if <player.has_flag[element_toggled]> {
+                # - queue clear
+            # }
+            # - if <player.has_flag[AirBladeCooldown]> {
+                # - queue clear
+            # }
+            # - if <player.flag[element]> == air {
+                # - flag <player> AirBladeCooldown duration:6s
+                # - repeat 22 {
+                    # - foreach <player.location.points_between[<player.location.cursor_on>]> {
+                        # - playeffect <def[value]> effect:cloud quantity:1 offset:0.15,0.15,0.15
+                        # - hurt 3 <def[value].find.living_entities.within[1.5].exclude[<player>]>
+                    # }
+                    # - wait 0.05t
+                # }
+            # }
+AirScooter: 
+    type: world 
+    debug: false
+    events: 
+        on player starts sneaking:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - wait 1t
+            - if <player.flag[element]> == air && <player.item_in_hand> != <i@GliderStaff> && !<player.is_on_ground> && <cuboid[<player.location.add[1.5,1.5,1.5]>|<player.location.add[-1.5,-1.5,-1.5]>].blocks.filter[material.name.is[!=].to[air]].size> != 0 {
+                - spawn <player.location> e@chicken[potion_effects=INVISIBILITY,99,9999] save:<player.name>ScooterChicken
+                - adjust <player> "can_fly:true"
+                - wait 2t
+                - mount <player>|<entry[<player.name>ScooterChicken].spawned_entities.first>
+                - flag <player> NoDismount
+                - flag <player> AirScooter:<entry[<player.name>ScooterChicken].spawned_entities.first>
+                - flag <player.flag[AirScooter]> BenderJockey:<player>
+                - wait 3s
+                - flag <player> NoDismount:!
+            }
+        on player steers chicken:
+            - if <player.has_flag[element_toggled]> {
+                - queue clear
+            }
+            - if <context.jump> {
+                - remove <player.flag[AirScooter]>
+                - flag <player> AirScooter:!
+                - adjust <player> "can_fly:false"
+                - adjust <player> "velocity:<player.location.direction.vector.mul[0.6].add[0,0.9,0]>"
+            }
+            - if <context.dismount> {
+                - if <player.has_flag[NoDismount]> {
+                    - determine passively cancelled
+                }
+                else {
+                    - remove <player.flag[AirScooter]>
+                    - adjust <player> "can_fly:false"
+                    - flag <player> AirScooter:!
+                }
+            }
+            - if <player.flag[AirScooter].flag[ScooterHealth]> <= 0 {
+                - remove <player.flag[AirScooter]>
+                - adjust <player> "can_fly:false"
+                - flag <player> AirScooter:!
+            }
+            - playeffect <player.location.below> effect:cloud quantity:5
+            - if <cuboid[<player.location.add[1.5,1.5,1.5]>|<player.location.add[-1.5,-1.5,-1.5]>].blocks.filter[material.name.is[!=].to[air]].size> != 0 {
+                - adjust <player.flag[AirScooter]> "velocity:<player.location.direction.vector.mul[0.8]>"
+            }
+        on player damaged:
+            - if <player.has_flag[AirScooter]> {
+                - hurt <context.damage> <player.flag[AirScooter]>
+            }
+
+ScooterClear:
+    type: world
+    debug: false
+    events:
+        on entity death:
+            - narrate <context.entity.list_effects>
+            - if <context.entity.list_effects.contains_text[INVISIBILITY]> {
+                - determine NO_DROPS
+            }
+        on system time minutely:
+            - foreach <w@StaffWorld.entities> {
+                - if <def[value].name> == chicken && <def[value].list_effects.contains_text[INVISIBILITY]> {
+                    - remove <def[value]>
+                }
+            }
+            - foreach <w@SpiritWilds.entities> {
+                - if <def[value].name> == chicken && <def[value].list_effects.contains_text[INVISIBILITY]> {
+                    - remove <def[value]>
+                }
+            }
+            - foreach <w@SpiritWorld.entities> {
+                - if <def[value].name> == chicken && <def[value].list_effects.contains_text[INVISIBILITY]> {
+                    - remove <def[value]>
+                }
+            }
+            - foreach <w@AvatarRPG.entities> {
+                - if <def[value].name> == chicken && <def[value].list_effects.contains_text[INVISIBILITY]> {
+                    - remove <def[value]>
+                }
+            }
+            - foreach <w@ArenaWorld.entities> {
+                - if <def[value].name> == chicken && <def[value].list_effects.contains_text[INVISIBILITY]> {
+                    - remove <def[value]>
+                }
+            }
+            
+            
+##################################
+## EARTHBENDING
+##################################
+EarthArmor: 
+    type: world 
+    debug: false 
+    events: 
+        on player starts sneaking: 
+            - if <player.has_flag[element_toggled]> { 
+                - queue clear 
+            } 
+            - if <player.flag[element]> == earth { 
+                - if <player.location.cursor_on[3].material> == m@air { 
+                    - if !<player.is_on_ground> { 
+                        - queue clear 
+                    } 
+                    - if <player.has_flag[armorcooldown]> { 
+                        - playsound <player.location> sound:BLOCK_ANVIL_PLACE volume:0.15 
+                        - queue clear 
+                    } 
+                    - if <player.has_flag[armorhealth]> { 
+                        - queue clear 
+                    } 
+                    - define hardscale <li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite> 
+                    - if !<def[hardscale].contains[<player.location.center.add[0,-1,0].material>]> { 
+                        - queue clear 
+                    } 
+                    - flag <player> source:<player.location.add[0,-1,0].material> 
+                    - flag <player> sourceloc:<player.location.add[0,-1,0]> 
+                    - playeffect <player.location> effect:blockdust_<player.location.add[0,-1,0].material.id> quantity:250 
+                    - repeat 15 { 
+                        - playsound <player.location> sound:BLOCK_STONE_BREAK volume:25 
+                    } 
+                    - modifyblock <player.flag[sourceloc]> m@air 
+                    - flag <player> armorhealth:<def[hardscale].find[<player.flag[source]>].mul[3]> 
+                } 
+            } 
+        on player damaged: 
+            - if <context.cause> == FALL { 
+                - queue clear 
+            } 
+            - if <player.has_flag[armorhealth]> { 
+                - flag <player> armorhealth:<player.flag[armorhealth].sub[<context.damage>]> 
+                - determine passively cancelled 
+                - if <player.flag[armorhealth]> <= 0 { 
+                    - modifyblock <player.flag[sourceloc]> <player.flag[source]> 
+                    - playeffect <player.location.points_between[<player.flag[sourceloc]>]> effect:blockdust_<player.flag[source].as_material.id> quantity:250 offset:0,0,0 
+                    - repeat 15 { 
+                        - playsound <player.location> sound:BLOCK_STONE_BREAK volume:25 
+                    } 
+                    - flag <player> armorhealth:! 
+                    - flag <player> source:! 
+                    - flag <player> sourceloc:! 
+                    - flag <player> armorcooldown duration:30s 
+                } 
+            } 
+
+EarthFall: 
+    type: world 
+    debug: false 
+    events: 
+        on player damaged: 
+            - if <player.has_flag[element_toggled]> { 
+                - queue clear 
+            } 
+            - if <player.flag[element]> == earth { 
+                - if <context.cause> == FALL { 
+                    - if <li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite.contains[<player.location.center.add[0,-1,0].material>]> { 
+                        - determine passively cancelled 
+                    } 
+                } 
+            } 
+
+SeismicSense: 
+  type: world 
+  debug: false 
+  events: 
+    on system time minutely: 
+    - repeat 60 { 
+      - run seismic_task 
+      - wait 1s 
+      - run seismic_check 
+      } 
+
+seismic_task: 
+  type: task 
+  debug: false 
+  script: 
+  - foreach <server.list_online_players.filter[has_flag[seismic_sense_unlocked]]> { 
+    - if !<li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite.contains[<def[value].as_player.location.center.add[0,-1,0].material>]> { 
+        - queue clear 
+    } 
+    - if !<def[value].as_player.has_flag[element_toggled]> && !<def[value].as_player.has_flag[ss_toggled]> { 
+      - foreach <def[value].as_player.location.find.living_entities.within[20].exclude[<def[value]>]> { 
+        - if !<li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite.contains[<def[value].location.center.add[0,-1,0].material>]> { 
+            - queue clear 
+          } else { 
+          - adjust <def[value]> glowing:true 
+          } 
+        } 
+      } 
+    } 
+
+seismic_check: 
+  type: task 
+  debug: false 
+  script: 
+  - foreach <server.list_online_players.filter[has_flag[seismic_sense_unlocked]]> { 
+    - define player <def[value]> 
+    - foreach <def[value].as_player.location.find.living_entities.within[50].filter[glowing]> { 
+      - if <def[player].location.find.living_entities.within[20]> !contains <def[value]> { 
+        - adjust <def[value]> glowing:false 
+        } 
+      } 
+    } 
+
+
+SeismicSense_Command: 
+    type: command 
+    name: ss 
+    usage: /ss 
+    description: Toggle Seismic Sense for Earthbenders who have unlocked it 
+    script: 
+    - if <player.flag[element]> != earth { 
+        - narrate "<&c>You are not an Earthbender!" 
+        - queue clear 
+    } 
+    - if !<player.has_flag[seismic_sense_unlocked]> { 
+        - narrate "<&c>You have not unlocked Seismic Sense!" 
+        - queue clear 
+    } 
+    - if <player.has_flag[ss_toggled]> { 
+        - narrate "<&2>Your Seismic Sense has been toggled back on!" 
+        - flag <player> ss_toggled:! 
+    } else { 
+        - narrate "<&2>Your Seismic Sense has been toggled off!" 
+        - flag <player> ss_toggled 
+    } 
+
+EarthLaunch: 
+    type: world 
+    debug: false 
+    events: 
+        on player left clicks: 
+            - if <player.location.cursor_on[7].material> != m@air { 
+                - queue clear 
+            } 
+            - if <player.has_flag[launch_cooldown]> { 
+                - playsound <player.location> sound:BLOCK_ANVIL_PLACE volume:0.15 
+                - queue clear 
+            } 
+            - if <player.has_flag[element_toggled]> { 
+                - queue clear 
+            } 
+            - if <player.flag[element]> == earth { 
+                - if <li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite.contains[<player.location.center.add[0,-1,0].material>]> { 
+                    - playeffect <player.location> effect:blockdust_<player.location.add[0,-1,0].material.id> quantity:250 
+                    - adjust <player> "velocity:<player.location.direction.vector.x.mul[1.5]>,1,<player.location.direction.vector.z.mul[1.5]>" 
+                    - showfake <player.location.add[0,-1,0].material> <player.location> players:<server.list_online_players> duration:1s 
+                    - playsound <player.location> sound:ENTITY_GHAST_SHOOT volume:100 
+                    - flag <player> launch_cooldown duration:5s 
+                } 
+            } 
+
+EarthRide: 
+    type: world 
+    debug: false 
+    events: 
+        on player starts sneaking: 
+            - if <player.has_flag[EarthRideActive]> { 
+                - flag <player> EarthRideActive:! 
+                - queue clear 
+            } 
+            - ^if <player.is_on_ground> { 
+                - queue clear 
+            } 
+            - if <player.flag[element]> != earth { 
+                - queue clear 
+            } 
+            - if <player.has_flag[element_toggled]> { 
+                - queue clear 
+            } 
+            - if <player.location.cursor_on[5].material> != m@air { 
+                - queue clear 
+            } 
+            - if <li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite.contains[<player.location.center.add[0,-2,0].material>]> { 
+                - if <player.has_flag[EarthRideActive]> { 
+                    - flag <player> EarthRideActive:! 
+                    - queue clear 
+                } 
+                - flag <player> EarthRideActive 
+            } 
+        on player walks: 
+            - if <player.has_flag[EarthRideActive]> { 
+                - if !<li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite.contains[<player.location.center.add[0,-1,0].material>]> { 
+                    - queue clear 
+                } 
+                - adjust <player> "velocity:<player.location.direction.vector.mul[0.6].add[0,0.19,0]>" 
+                - define block <player.location.center.add[0,-1,0].material.id> 
+                - modifyblock <player.location.center.add[0,-1,0]> m@air 
+                - spawn e@falling_block,<def[block]> <player.location.center.add[0,-1,0]> save:fallingblock 
+                - adjust <entry[fallingblock].spawned_entities> "velocity:0,0.2,0" 
+                - playeffect <player.location> effect:blockdust_<player.location.add[0,-1,0].material.id> quantity:25 
+                - playsound <player.location> sound:BLOCK_STONE_BREAK volume:25 
+            } 
+
+EarthDig: 
+    type: world 
+    debug: false 
+    events: 
+      on player left clicks: 
+      - if <player.has_flag[dig_cooldown]> { 
+        - queue clear 
+      } 
+      - if <player.flag[element]> == earth && !<player.has_flag[element_toggled]> { 
+        - if <li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite.contains[<player.location.cursor_on[5].material>]> { 
+          - define bmat <player.location.cursor_on[5].find.blocks[<li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite>].within[2].parse[material.id]> 
+          - define blocs li@ 
+          - flag <player> dig_cooldown duration:3s 
+          - foreach <player.location.cursor_on[5].find.blocks[<li@m@sand|m@clay|m@dirt|m@grass|m@gravel|m@diorite|m@cobblestone|m@stone|m@polished_diorite|m@andesite|m@polished_andesite|m@granite|m@polished_granite>].within[2]> { 
+            - wait 1t 
+            - modifyblock <def[value]> m@air 
+            - playsound <def[value]> sound:BLOCK_STONE_BREAK 
+            - define blocs <def[blocs].include[<def[value]>]> 
+            - playeffect <def[value]> effect:blockdust_<def[bmat].get[<def[loop_index]>]> quantity:25 
+            } 
+          - wait 1m 
+          - foreach <def[blocs]> { 
+            - define current <def[blocs].get[<def[loop_index]>]> 
+            - foreach <def[bmat]> { 
+              - modifyblock <def[current]> <def[value]> 
+              } 
+            } 
+          } 
+        } 
